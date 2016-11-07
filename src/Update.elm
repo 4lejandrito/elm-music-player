@@ -25,3 +25,7 @@ update msg model =
         SongsFailed error -> ({
             model | songs = Failed error
         }, Cmd.none)
+
+        PlaySong song -> ({
+            model | selectedSong = Just song
+        }, Cmd.none)

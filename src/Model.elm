@@ -8,12 +8,14 @@ type alias Error = Http.Error
 
 type alias Song = {
     name : String,
-    duration: Seconds
+    duration: Seconds,
+    url: String
 }
 
 type Songs = Loading | Failed Error | Present (List Song)
 
 type alias Model = {
     searchTerm : String,
-    songs : Songs
+    songs : Songs,
+    selectedSong : Maybe Song
 }
