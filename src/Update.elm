@@ -3,9 +3,10 @@ module Update exposing(update)
 import Http
 import Task
 import String
-import Model exposing (Model, Song, Seconds)
+import Model exposing (Model, Songs(..), Song, Seconds)
 import Messages exposing(Msg(..))
 import Decoder exposing (songsDecoder)
+import Commands exposing (getSongs)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -14,21 +15,13 @@ update msg model =
         Search text -> ({
             model |
             searchTerm = text,
-            songs = [],
-            loading = not (String.isEmpty text)
+            songs = if String.isEmpty text then Present [] else Loading
         }, if String.isEmpty text then Cmd.none else getSongs text)
 
-        SongsFailed error -> ({
-            model | error = Just error, loading = False
-        }, Cmd.none)
-
         SongsReceived songs -> ({
-            model | songs = songs, loading = False
+            model | songs = Present songs
         }, Cmd.none)
 
-getSongs : String -> Cmd Msg
-getSongs searchTerm =
-  let
-    url = "https://api.spotify.com/v1/search?type=track&q=" ++ (Http.uriEncode searchTerm)
-  in
-    Task.perform SongsFailed SongsReceived (Http.get songsDecoder url)
+        SongsFailed error -> ({
+            model | songs = Failed error
+        }, Cmd.none)

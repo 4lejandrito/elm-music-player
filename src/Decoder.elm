@@ -1,6 +1,5 @@
 module Decoder exposing(songsDecoder)
 
-import Task
 import Json.Decode as Json exposing ((:=), andThen, succeed)
 import Model exposing (Song, Seconds)
 
