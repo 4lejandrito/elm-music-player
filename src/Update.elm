@@ -1,11 +1,8 @@
 module Update exposing(update)
 
-import Http
-import Task
 import String
-import Model exposing (Model, Songs(..), Song, Seconds)
+import Model exposing (Model, Songs(..), Song)
 import Messages exposing(Msg(..))
-import Decoder exposing (songsDecoder)
 import Commands exposing (getSongs)
 
 update : Msg -> Model -> (Model, Cmd Msg)
